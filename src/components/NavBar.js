@@ -10,6 +10,7 @@ const NavBar = () => {
                 <Link to='/login'><p>Login</p></Link>
                 <Link to='/register'><p>Register</p></Link>
                 <Link to='/logout'><p>Logout</p></Link>
+                {/*TODO logout <-> remove token and userinfo in AuthContext*/}
             </div>
 
         </div>

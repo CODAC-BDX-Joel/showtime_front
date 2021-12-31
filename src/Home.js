@@ -3,7 +3,6 @@ import EventCard from "./components/EventCard";
 import UserOptions from "./components/UserOptions";
 
 const Home = () => {
-    const connectedUserId = 2; //User of connected id to be retrieve from context
     const events = [
         {id: 1, date: 'Mon Dec 27 2021 19:05:50 GMT+0100', band: 'ntm'},
         {id: 2, date: 'Tue Dec 28 2021 19:05:50 GMT+0100', band: 'u2'},
@@ -11,10 +10,6 @@ const Home = () => {
         {id: 4, date: 'Wed Dec 29 2021 19:05:50 GMT+0100', band: 'scorpion'},
         {id: 5, date: 'Wed Dec 29 2021 19:05:50 GMT+0100', band: 'norah jones'},
     ];
-
-    const displayMyEvents = () => {
-
-    }
 
     return (
         <div>
@@ -28,7 +23,7 @@ const Home = () => {
                 {/*TODO display below <UserOptions/ > btns and/or links only if user connected*/}
                 <UserOptions/>
                 {events.map(event =>
-                    (<EventCard event={event}/>)
+                    (<EventCard key={event.id} event={event}/>)
                 )}
             </main>
         </div>

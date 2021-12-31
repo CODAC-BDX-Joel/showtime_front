@@ -1,5 +1,6 @@
 import Home from "./Home";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import AuthContextProvider from "./contexts/AuthContext";
 import Login from "./Login";
 import Register from "./Register";
 import NotFound from "./NotFound";
@@ -14,61 +15,78 @@ import AdminUsers from "./AdminUsers";
 import AdminEvents from "./AdminEvents";
 import AdminBands from "./AdminBands";
 import AdminGenres from "./AdminGenres";
+import AddGenre from "./AddGenre";
+import AddBand from "./AddBand";
+import AddEvent from "./AddEvent";
 
 function App() {
     return (
-        <Router>
-            <div className="App">
-                <div className='content'>
-                    <NavBar/>
-                    <Switch>
-                        <Route path='/login'>
-                            <Login/>
-                        </Route>
-                        <Route path='/register'>
-                            <Register/>
-                        </Route>
-                        <Route path='/logout'>
-                            <Logout/>
-                        </Route>
-                        <Route path='/myEvents'>
-                            <MyEvents/>
-                        </Route>
-                        <Route path='/myFavBands'>
-                            <MyFavBands/>
-                        </Route>
-                        <Route path='/myProfile'>
-                            <MyProfile/>
-                        </Route>
-                        <Route path='/adminPage'>
-                            <AdminPage/>
-                        </Route>
-                        <Route path='/adminStats'>
-                            <AdminStats/>
-                        </Route>
-                        <Route path='/adminUsers'>
-                            <AdminUsers/>
-                        </Route>
-                        <Route path='/adminEvents'>
-                            <AdminEvents/>
-                        </Route>
-                        <Route path='/adminBands'>
-                            <AdminBands/>
-                        </Route>
-                        <Route path='/adminGenres'>
-                            <AdminGenres/>
-                        </Route>
-                        <Route exact path='/'>
-                            <Home/>
-                        </Route>
-                        <Route path='*'>
-                            <NotFound/>
-                        </Route>
-                    </Switch>
+        <AuthContextProvider>
+            <Router>
+                <div className="App">
+                    <div className='content'>
+                        <NavBar/>
+                        <Switch>
+                            <Route path='/login'>
+                                <Login/>
+
+                            </Route>
+                            <Route path='/register'>
+                                <Register/>
+                            </Route>
+                            <Route path='/logout'>
+                                <Logout/>
+                            </Route>
+                            <Route path='/myEvents'>
+                                <MyEvents/>
+                            </Route>
+                            <Route path='/myFavBands'>
+                                <MyFavBands/>
+                            </Route>
+                            <Route path='/myProfile'>
+                                <MyProfile/>
+                            </Route>
+                            <Route path='/adminPage'>
+                                <AdminPage/>
+                            </Route>
+                            <Route path='/adminStats'>
+                                <AdminStats/>
+                            </Route>
+                            <Route path='/adminUsers'>
+                                <AdminUsers/>
+                            </Route>
+                            <Route path='/adminEvents'>
+                                <AdminEvents/>
+                            </Route>
+                            <Route path='/event/create'>
+                                <AddEvent/>
+                            </Route>
+                            <Route path='/adminBands'>
+                                <AdminBands/>
+                            </Route>
+                            <Route path='/band/create'>
+                                <AddBand/>
+                            </Route>
+                            <Route path='/adminGenres'>
+                                <AdminGenres/>
+                            </Route>
+                            <Route path='/genre/create'>
+                                <AddGenre/>
+                            </Route>
+                            <Route exact path='/'>
+                                <Home/>
+                            </Route>
+                            <Route path='*'>
+                                <NotFound/>
+                            </Route>
+                        </Switch>
+                    </div>
+
                 </div>
-            </div>
-        </Router>
-    );
+            </Router>
+        </AuthContextProvider>
+    )
+        ;
 }
 
 export default App;
