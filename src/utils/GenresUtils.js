@@ -1,4 +1,4 @@
-import {createGenreUri, getAllGenresUri} from "./ConstantsList";
+import {createGenreUri, getAllGenresUri, deleteOneGenreUri} from "./ConstantsList";
 
 
 //Create genre
@@ -30,11 +30,31 @@ export const getAllGenres = async () => {
     const body = {
         headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
     }
-    const response = await fetch(getAllGenresUri, body)
-    if(response.ok && response.status === 200){
+    const response = await fetch(getAllGenresUri, body);
+    if (response.ok && response.status === 200) {
         const data = await response.json();
         return data;
-    }else{
+    } else {
+        return 'Error'
+    }
+}
+
+//Delete one genre
+export const deleteOneGenre = async (id) => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) ?? null;
+    const token = currentUser ? currentUser.access_token : null;
+    const body = {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    }
+    try {
+        const response = await fetch(`${deleteOneGenreUri}/${id}`, body);
+        if (response.ok && response.status === 200) {
+           return 'Deletion Ok';
+        } else {
+            return 'Error'
+        }
+    } catch (error) {
         return 'Error'
     }
 }

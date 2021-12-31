@@ -1,6 +1,6 @@
-import {createUserUri, loginUserUri} from "./ConstantsList";
+import {createUserUri, getAllUsersUri, loginUserUri} from "./ConstantsList";
 
-
+//Create user
 export const createUser = async (newUser) => {
     const response = await fetch(createUserUri, {
         method: 'POST',
@@ -10,7 +10,7 @@ export const createUser = async (newUser) => {
     return response;
 }
 
-
+//Login User
 export const loginUser = async (userToLogin) => {
     // console.log('login user')
     try {
@@ -28,5 +28,25 @@ export const loginUser = async (userToLogin) => {
     } catch (error) {
         return error.message
     }
+}
 
+
+//Read, get all users
+export const getAllUsers = async () => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) ?? null;
+    const token = currentUser ? currentUser.access_token : null;
+    const body = {
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    }
+    try {
+        const response = await fetch(getAllUsersUri, body)
+        if (response.ok && response.status === 200) {
+            const data = await response.json();
+            return data;
+        } else {
+            return 'Error'
+        }
+    } catch (error) {
+        return 'Error'
+    }
 }

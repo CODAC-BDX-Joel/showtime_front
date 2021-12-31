@@ -58,7 +58,8 @@ const AddBand = () => {
                 <label>Band name</label>
                 <input onChange={handleName} value={bandName} type='text' minLength='2' required/>
                 <label>Genre</label>
-                <select onChange={handleGenre}>
+                <select onChange={handleGenre} required>
+                    <option value="">--Genre--</option>
                     {genresList.map(genre => {
                         return (
                             <option onChange={handleGenre} key={genre._id} value={genre._id}>{genre.name}</option>
