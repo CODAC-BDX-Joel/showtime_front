@@ -1,4 +1,4 @@
-import {createEventUri, deleteOneEventUri, getAllEventsUri} from "./ConstantsList";
+import {createEventUri, deleteOneEventUri, getAllEventsUri, getOneEventUri} from "./ConstantsList";
 
 
 //Create event
@@ -27,10 +27,11 @@ export const createEvent = async (newEvent) => {
 //Read, get all events
 
 export const getAllEvents = async () => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser')) ?? null;
-    const token = currentUser ? currentUser.access_token : null;
+    // const currentUser = JSON.parse(localStorage.getItem('currentUser')) ?? null;
+    // const token = currentUser ? currentUser.access_token : null;
     const body = {
-        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        // headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        headers: {'Content-Type': 'application/json'},
     };
     try {
         const response = await fetch(getAllEventsUri, body)
@@ -45,12 +46,45 @@ export const getAllEvents = async () => {
     }
 }
 
+//Read, get one event
+export const getOneEvent = async (id) => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) ?? null;
+    const token = currentUser ? currentUser.access_token : null;
+    const body = {
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+    };
+    try {
+        const response = await fetch(`${getOneEventUri}/${id}`, body)
+        if (response.ok && response.status === 200) {
+            // console.log(response);
+            const data = await response.json();
+            return data;
+        } else {
+            return 'Error'
+        }
+    } catch (error) {
+        return 'Error'
+    }
+
+}
+
 //Delete one event
-export const deleteOneEvent = (id) => {
+export const deleteOneEvent = async (id) => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser')) ?? null;
     const token = currentUser ? currentUser.access_token : null;
     const body = {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
     };
+    try {
+        const response = await fetch(`${deleteOneEventUri}/${id}`, body);
+        console.log('delete event response', response);
+        if (response.ok && response.status === 200) {
+            return 'Deletion Ok';
+        } else {
+            return 'Error'
+        }
+    } catch (error) {
+        return 'Error'
+    }
 }

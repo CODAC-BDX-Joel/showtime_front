@@ -1,16 +1,32 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import EventCard from "./components/EventCard";
 import UserOptions from "./components/UserOptions";
+import {getAllEvents} from "./utils/EventsUtils";
+import {useHistory} from "react-router-dom";
 
 const Home = () => {
-    const events = [
-        {id: 1, date: 'Mon Dec 27 2021 19:05:50 GMT+0100', band: 'ntm'},
-        {id: 2, date: 'Tue Dec 28 2021 19:05:50 GMT+0100', band: 'u2'},
-        {id: 3, date: 'Tue Dec 28 2021 19:05:50 GMT+0100', band: '50 cents'},
-        {id: 4, date: 'Wed Dec 29 2021 19:05:50 GMT+0100', band: 'scorpion'},
-        {id: 5, date: 'Wed Dec 29 2021 19:05:50 GMT+0100', band: 'norah jones'},
-    ];
+    const history = useHistory();
+    const [isLoading, setIsLoading] = useState(false);
+    const [eventsList, setEventsList] = useState([]);
+    useEffect(() => {
+        setIsLoading(true);
+        async function fetchAllEvents() {
+            const data = await getAllEvents();
+            if (data === 'Error') {
+                setIsLoading(false)
+                console.log('Failed to fetch events list')
+            } else {
+                console.log('Events list:', data)
+                setIsLoading(false);
+                setEventsList(data);
+            }
+        }
+        fetchAllEvents();
+    }, []);
 
+    const handleBookEvent = (eventId) => {
+        history.push(`/bookEvent/${eventId}`)
+    }
     return (
         <div>
             <select required>
@@ -20,11 +36,19 @@ const Home = () => {
                 <option value="filterByGroup">Group</option>
             </select>
             <main>
-                {/*TODO display below <UserOptions/ > btns and/or links only if user connected*/}
+                {/*TODO display below <UserOptions/ > btns and/or links only if normal user connected */}
                 <UserOptions/>
-                {events.map(event =>
-                    (<EventCard key={event.id} event={event}/>)
-                )}
+                {isLoading ? <div>Loading...</div> : (
+                    <div>{eventsList.length === 0 ? <div>No events...</div> : <div>{eventsList.map(event => {
+                        return (
+                            <div key={event._id}>
+                                <h1>{event.band.name}</h1>
+                                <p>Date: {event.date}</p>
+                                <button onClick={() => {handleBookEvent(event._id)}}>Book</button>
+                                <button> Favorite band</button>
+                                <hr/>
+                            </div>)
+                    })}</div>} </div>)}
             </main>
         </div>
     );

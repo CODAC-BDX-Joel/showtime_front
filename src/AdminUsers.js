@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import AdminOptions from "./components/AdminOptions";
-import {getAllUsers} from "./utils/UsersUtils";
+import {getAllUsers, deleteOneUser} from "./utils/UsersUtils";
+import {useHistory} from "react-router-dom";
 
 const AdminUsers = () => {
+    const history = useHistory();
     const [isLoading, setIsLoading] = useState(false);
     const [usersList, setUsersList] = useState([]);
     //Fetch all users
@@ -23,6 +25,26 @@ const AdminUsers = () => {
 
         fetchAllUsers();
     }, []);
+
+    const handleDeleteUser = async (id) => {
+        setIsLoading(true)
+        const response = await deleteOneUser(id);
+        if (response === 'Error') {
+            setIsLoading(false);
+            alert('User deletion failed');
+        } else {
+            setIsLoading(false);
+            alert('User removed with success');
+            const newUsersList = usersList.filter(user => {
+                return user._id !== id;
+            });
+            setUsersList(newUsersList);
+        }
+    }
+
+    const handleDetails = (id) => {
+        history.push(`/userDetails/${id}`)
+    }
     return (
         <div>
             <AdminOptions/>
@@ -35,8 +57,8 @@ const AdminUsers = () => {
                             <div key={user._id}>
                                 <p>username: {user.username}</p>
                                 <p>email: {user.email}</p>
-                                <button>update</button>
-                                <button>delete</button>
+                                <button onClick={() => handleDetails(user._id)}>details</button>
+                                <button onClick={() => handleDeleteUser(user._id)}>delete</button>
                                 <hr/>
                             </div>
                         )

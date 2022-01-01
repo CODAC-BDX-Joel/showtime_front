@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import AdminOptions from "./components/AdminOptions";
 import {Link} from "react-router-dom";
-import {getAllEvents} from "./utils/EventsUtils";
+import {deleteOneEvent, getAllEvents} from "./utils/EventsUtils";
 
 const AdminEvents = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -9,23 +9,32 @@ const AdminEvents = () => {
     //Fetch all events
     useEffect(() => {
         setIsLoading(true)
-
         async function fetchAllEvents() {
             const data = await getAllEvents();
             if (data === 'Error') {
                 setIsLoading(false)
                 console.log('Failed to fetch events list')
             } else {
-                console.log('Events list:', data)
+                console.log('Events list:', data);
                 setIsLoading(false);
                 setEventsList(data);
             }
         }
-
         fetchAllEvents();
     }, []);
-    const handleDeleteEvent = (id) => {
-        console.log('deleting event...', id);
+    const handleDeleteEvent = async (id) => {
+        const response = await deleteOneEvent(id);
+        if (response === 'Error') {
+            setIsLoading(false);
+            alert('Event deletion failed');
+        } else {
+            const newEventsList = eventsList.filter(event => {
+                return event._id !== id;
+            })
+            setEventsList(newEventsList);
+            setIsLoading(false);
+            alert('Event removed with success');
+        }
     }
     return (
         <div>

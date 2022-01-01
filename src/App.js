@@ -1,6 +1,5 @@
 import Home from "./Home";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import AuthContextProvider from "./contexts/AuthContext";
 import Login from "./Login";
 import Register from "./Register";
 import NotFound from "./NotFound";
@@ -18,10 +17,13 @@ import AdminGenres from "./AdminGenres";
 import AddGenre from "./AddGenre";
 import AddBand from "./AddBand";
 import AddEvent from "./AddEvent";
+import BookEvent from "./BookEvent";
+import Blob from "./Blob";
+import UserDetails from "./UserDetails";
 
 function App() {
     return (
-        <AuthContextProvider>
+        // <AuthContextProvider>
             <Router>
                 <div className="App">
                     <div className='content'>
@@ -55,6 +57,9 @@ function App() {
                             <Route path='/adminUsers'>
                                 <AdminUsers/>
                             </Route>
+                            <Route path='/userDetails/:userId'>
+                                <UserDetails/>
+                            </Route>
                             <Route path='/adminEvents'>
                                 <AdminEvents/>
                             </Route>
@@ -73,6 +78,12 @@ function App() {
                             <Route path='/genre/create'>
                                 <AddGenre/>
                             </Route>
+                            <Route path='/bookEvent/:eventId'>
+                                <BookEvent/>
+                            </Route>
+                            <Route path='/test'>
+                               <Blob/>
+                            </Route>
                             <Route exact path='/'>
                                 <Home/>
                             </Route>
@@ -84,7 +95,7 @@ function App() {
 
                 </div>
             </Router>
-        </AuthContextProvider>
+        // </AuthContextProvider>
     )
         ;
 }

@@ -4,7 +4,7 @@ const EventCard = (props) => {
     const {event} = props
     return (
         <div className='cardWrapper'>
-            <h2>{event.band}</h2>
+            <h2>{event.band.name}</h2>
             <p>{event.date}</p>
             <div>
                 <button>Book</button>
