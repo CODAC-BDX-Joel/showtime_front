@@ -20,81 +20,75 @@ import AddEvent from "./AddEvent";
 import BookEvent from "./BookEvent";
 import Blob from "./Blob";
 import UserDetails from "./UserDetails";
+import AddFavBand from "./AddFavBand";
+import {useEffect, useState} from "react";
+import AdminRoute from "./AdminRoute";
 
 function App() {
+    const [connectedUser, setConnectedUser] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    useEffect(() => {
+        if (connectedUser) {
+            setIsLoggedIn(true);
+        }
+    }, [])
     return (
         // <AuthContextProvider>
-            <Router>
-                <div className="App">
-                    <div className='content'>
-                        <NavBar/>
-                        <Switch>
-                            <Route path='/login'>
-                                <Login/>
+        <Router>
+            <div className="App">
+                <div className='content'>
+                    <NavBar connectedUser={connectedUser} isLoggedIn={isLoggedIn} isAdmin={isAdmin}/>
+                    <Switch>
 
-                            </Route>
-                            <Route path='/register'>
-                                <Register/>
-                            </Route>
-                            <Route path='/logout'>
-                                <Logout/>
-                            </Route>
-                            <Route path='/myEvents'>
-                                <MyEvents/>
-                            </Route>
-                            <Route path='/myFavBands'>
-                                <MyFavBands/>
-                            </Route>
-                            <Route path='/myProfile'>
-                                <MyProfile/>
-                            </Route>
-                            <Route path='/adminPage'>
-                                <AdminPage/>
-                            </Route>
-                            <Route path='/adminStats'>
-                                <AdminStats/>
-                            </Route>
-                            <Route path='/adminUsers'>
-                                <AdminUsers/>
-                            </Route>
-                            <Route path='/userDetails/:userId'>
-                                <UserDetails/>
-                            </Route>
-                            <Route path='/adminEvents'>
-                                <AdminEvents/>
-                            </Route>
-                            <Route path='/event/create'>
-                                <AddEvent/>
-                            </Route>
-                            <Route path='/adminBands'>
-                                <AdminBands/>
-                            </Route>
-                            <Route path='/band/create'>
-                                <AddBand/>
-                            </Route>
-                            <Route path='/adminGenres'>
-                                <AdminGenres/>
-                            </Route>
-                            <Route path='/genre/create'>
-                                <AddGenre/>
-                            </Route>
-                            <Route path='/bookEvent/:eventId'>
-                                <BookEvent/>
-                            </Route>
-                            <Route path='/test'>
-                               <Blob/>
-                            </Route>
-                            <Route exact path='/'>
-                                <Home/>
-                            </Route>
-                            <Route path='*'>
-                                <NotFound/>
-                            </Route>
-                        </Switch>
-                    </div>
-
+                        <Route path='/login'>
+                            <Login setConnectedUser={setConnectedUser} setIsLoggedIn={setIsLoggedIn}
+                                   setIsAdmin={setIsAdmin}/>
+                        </Route>
+                        <Route path='/register'>
+                            <Register/>
+                        </Route>
+                        <Route path='/logout'>
+                            <Logout setConnectedUser={setConnectedUser} setIsLoggedIn={setIsLoggedIn}
+                                    setIsAdmin={setIsAdmin}/>
+                        </Route>
+                        <Route path='/myEvents'>
+                            <MyEvents/>
+                        </Route>
+                        <Route path='/myFavBands'>
+                            <MyFavBands/>
+                        </Route>
+                        <Route path='/myProfile'>
+                            <MyProfile/>
+                        </Route>
+                        <AdminRoute isAdmin={isAdmin} path='/blob' component={Blob}/>
+                        <AdminRoute path='/adminPage' component={AdminPage}/>
+                        <AdminRoute path='/adminStats' component={AdminStats}/>
+                        <AdminRoute path='/adminUsers' component={AdminUsers}/>
+                        <AdminRoute path='/userDetails/:userId' component={UserDetails}/>
+                        <AdminRoute path='/adminEvents' component={AdminEvents}/>
+                        <AdminRoute path='/event/create' component={AddEvent}/>
+                        <AdminRoute path='/adminBands' component={AdminBands}/>
+                        <AdminRoute path='/band/create' component={AddBand}/>
+                        <AdminRoute path='/adminGenres' component={AdminGenres}/>
+                        <AdminRoute path='/genre/create' component={AddGenre}/>
+                        <Route path='/addFavBand/:bandId'>
+                            <AddFavBand setConnectedUser={setConnectedUser} setIsLoggedIn={setIsLoggedIn}/>
+                        </Route>
+                        <Route path='/bookEvent/:eventId'>
+                            <BookEvent setConnectedUser={setConnectedUser} setIsLoggedIn={setIsLoggedIn}/>
+                        </Route>
+                        <Route exact path='/'>
+                            <Home connectedUser={connectedUser} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+                        </Route>
+                        <Route path='*'>
+                            <NotFound/>
+                        </Route>
+                    </Switch>
                 </div>
-            </Router>
+
+            </div>
+        </Router>
         // </AuthContextProvider>
     )
         ;

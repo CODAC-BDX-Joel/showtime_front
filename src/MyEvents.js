@@ -1,20 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import UserOptions from "./components/UserOptions";
+import {getOneEvent} from "./utils/EventsUtils";
 
 const MyEvents = () => {
     const userConnected = JSON.parse(localStorage.getItem('currentUser'));
+    const eventsToFetch = userConnected.user.bookedEvents;
+
 
     useEffect(() => {
-        console.log(userConnected);
-        console.log(userConnected.access_token)
-        //TODO fetch events related to the current user
-
-        //TODO store myevents in state
-    }, [userConnected])
+    }, [])
     return (
         <div>
             <UserOptions/>
-            <h1>Here are my events...</h1>
+            <p>My events</p>
         </div>
     );
 };

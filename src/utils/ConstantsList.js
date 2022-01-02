@@ -40,6 +40,8 @@ export const createBandUri = `${host}/bands/admin`;
 //Get all bands
 export const getAllBandsUri = `${host}/bands/admin`;
 
+//Get on band
+export const getOneBandUri = `${host}/bands/admin`;
 
 //Delete one band
 export const deleteOneBandUri = `${host}/bands/admin`;

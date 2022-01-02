@@ -130,6 +130,34 @@ export const UserbooksEvent = async (eventId) => {
     }
 }
 
+//Update one user - add a band to my favBand
+export const addToFavBand = async (bandId) => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) ?? null;
+    const token = currentUser ? currentUser.access_token : null;
+    const body = {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        body: JSON.stringify({
+            username: currentUser.username,
+            email: currentUser.email,
+            favBands: [...currentUser.user.favBands, bandId],
+            bookedEvents: currentUser.user.bookedEvents,
+        })
+    };
+    try {
+        const response = await fetch(`${updateOneUserUri}/${currentUser.user._id}`, body);
+        if (response.ok && response.status === 200) {
+            const data = await response.json();
+            console.log('User updated with success', data);
+        } else {
+            return 'Error';
+        }
+    } catch (error) {
+        return 'Error';
+    }
+}
+
+
 //Delete one user
 export const deleteOneUser = async (id) => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser')) ?? null;

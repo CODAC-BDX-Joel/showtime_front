@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Link, useHistory} from "react-router-dom";
 import {loginUser} from "./utils/UsersUtils";
 
-const Login = () => {
+const Login = ({setConnectedUser,setIsLoggedIn,setIsAdmin}) => {
     //TODO insert loader while waiting for login
     const history = useHistory();
     const [username, setUsername] = useState('');
@@ -20,8 +20,12 @@ const Login = () => {
         if (data === 'Login failed') {
             alert('Login failed')
         } else {
-            console.log('log in ok ');
             localStorage.setItem('currentUser', JSON.stringify(data));
+            setConnectedUser(data);
+            setIsLoggedIn(true);
+            if(data.user.roles[0] ==='admin'){
+                setIsAdmin(true);
+            }
             history.push('/');
         }
     };
